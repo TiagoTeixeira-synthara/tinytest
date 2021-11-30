@@ -1,0 +1,7 @@
+Debug/
+Test/
+Release/
+x64/
+unittest/Debug
+unittest/Test
+unittest/Release
