@@ -179,13 +179,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="unittest.cpp" />
+    <ClCompile Include="functions.cpp" />
+    <None Include="lib\LICENSE">
+      <FileType>CppCode</FileType>
+    </None>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="unittest.h" />
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="lib\unittest.h" />
+    <ClInclude Include="tests.h" />
+    <ClInclude Include="test_basic.h" />
+    <ClInclude Include="test_exceptions.h" />
+    <ClInclude Include="test_trap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

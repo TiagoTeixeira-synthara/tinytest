@@ -21,9 +21,9 @@ extern "C" {
 
 #ifndef UNITTEST_TIMEMICRO
 #	ifdef __cplusplus
-	unsigned long long unittest_timemicro() { return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count(); }
+	inline unsigned long long unittest_timemicro() { return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count(); }
 #	else
-	unsigned long long unittest_timemicro() { struct timespec ts; timespec_get(&ts, TIME_UTC); return (ts.tv_sec * 1000000000L + ts.tv_nsec) * 0.001; }
+	inline unsigned long long unittest_timemicro() { struct timespec ts; timespec_get(&ts, TIME_UTC); return (ts.tv_sec * 1000000000L + ts.tv_nsec) * 0.001; }
 #	endif
 #endif
 
@@ -74,6 +74,13 @@ extern "C" {
  * @brief Activate unit test trap
  */
 #	define UNITTEST_TRAP_ACTIVATE(TRAPNAME) ++unittest_trap_##TRAPNAME;
+
+#else
+
+#	define UNITTEST_TRAP_DEFINE(TRAPNAME)
+#	define UNITTEST_TRAP_LINK(TRAPNAME)
+#	define UNITTEST_TRAP_ACTIVATE(TRAPNAME)
+
 #endif
 
 // Assertions
@@ -155,6 +162,7 @@ extern "C" {
 #define UNITTEST_ASSERT_TIME_NOTLONGER_END(MICROS) if (unittest_timemicro() - test_tim > MICROS) \
 	{ UNITTEST_FAILURE(); UNITTEST_PRINT(UNITTEST_FILNUM " -> test case FAILED: code execution took %lluus while max was %lluus\r\n", unittest_timemicro() - test_tim, MICROS ) } else UNITTEST_SUCCESS(); test_tim = 0;
 
+#ifdef UNITTEST
 /**
  * @brief Begin trap hit assertion for TRAPNAME trap. Traps must be defined and activated using UNITTEST_TRAP_* macros
  */
@@ -200,6 +208,17 @@ extern "C" {
 	if (unittest_trap_##TRAPNAME < HITCOUNT) UNITTEST_SUCCESS(); \
 	else { UNITTEST_FAILURE(); UNITTEST_PRINT(UNITTEST_FILNUM " -> test case FAILED: trap \"" UNITTEST_STR(TRAPNAME) "\" was hit %d times, expected less than %d hits\r\n", unittest_trap_##TRAPNAME, HITCOUNT); }
 
+#else
+
+#define UNITTEST_ASSERT_TRAP_START(TRAPNAME)
+#define UNITTEST_ASSERT_TRAP_HIT_END(TRAPNAME)
+#define UNITTEST_ASSERT_TRAP_NOT_HIT_END(TRAPNAME)
+#define UNITTEST_ASSERT_TRAP_HIT_COUNT_END(TRAPNAME, HITCOUNT)
+#define UNITTEST_ASSERT_TRAP_HIT_MORE_END(TRAPNAME, HITCOUNT)
+#define UNITTEST_ASSERT_TRAP_HIT_LESS_END(TRAPNAME, HITCOUNT)
+
+#endif
+
 #ifdef __cplusplus
 /**
 * @brief Begin exception testing block.
@@ -241,6 +260,12 @@ extern "C" {
 * @brief Create unit test with standarized name
 */
 #define UNITTEST_BEGIN(NAME) int test_##NAME()
+
+/**
+ * @brief Unit test forward declaration statement.
+ * Should be used in header file containing test declaration, and the actual test should be defined later using UNITTEST_BEGIN macro.
+ */
+#define UNITTEST_DECLARE(NAME) UNITTEST_BEGIN(NAME)
 
 /**
 * @brief Finish unit test and display test results.

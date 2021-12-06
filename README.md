@@ -7,7 +7,7 @@ The goal of this project is to share fast and easy way to test your projects.
 
 To begin work with the framework, few steps has to be made:
 
-1. Include "unittest.h" in your project
+1. Copy file "unittest.h" from "lib" directory and include it in your project
 2. Call "UNITTEST_INIT()" macro once in your project in global scope
 3. Add UNITTEST definition to your project to enable the tests
 
@@ -46,6 +46,8 @@ UNITTEST_ASSERT_EXCEPTIONTYPE_END(TYPE)                              | Assert th
 Tests are created using a set of macros with syntax resembling function syntax. In order to create unit test, use UNITTEST_BEGIN(TESTNAME) macro, where TESTNAME will be name used to reference the test.
 Inside the unit test function, testing code must be placed between UNITTEST_SETUP(); and UNITTEST_END(); macros.
 
+Test names must be unique throughout the entire project, and each file containing tests must include unittest.h file.
+
 Example test:
 
     UNITTEST_BEGIN(multest)
@@ -71,4 +73,8 @@ where TESTNAME is name of the test specified in UNITTEST_BEGIN(TESTNAME) macro.
 
 ## Examples
 
-For more examples take a look at unittest.cpp file.
+For more examples take a look at test_basic.h, test_exceptions.h, test_trap.h and tests.h files.
+
+## License
+
+[MIT](LICENSE)
