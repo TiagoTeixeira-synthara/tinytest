@@ -43,7 +43,7 @@ extern "C" {
 #define UNITTEST_XSTR(TXT) #TXT
 #define UNITTEST_STR(TXT) UNITTEST_XSTR(TXT)
 
-#define UNITTEST_PRINT(WHAT, ...) fprintf(stdout, WHAT, __VA_ARGS__);
+#define UNITTEST_PRINT(WHAT, ...) fprintf(stdout, WHAT __VA_OPT__(,) __VA_ARGS__);
 #define UNITTEST_FILNUM __FILE__ ":" UNITTEST_STR(__LINE__)
 #define UNITTEST_PRINTARG()
 
