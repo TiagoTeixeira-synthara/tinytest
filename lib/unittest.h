@@ -276,6 +276,7 @@ extern "C" {
  * @brief Parameterized unit test forward declaration statement.
  * Should be used in header file containing test declaration, and the actual test should be defined later using UNITTEST_BEGIN_P macro.
  */
+#define UNITTEST_DECLARE_P(NAME, ...) UNITTEST_BEGIN(NAME __VA_OPT__(,) __VA_ARGS__)
 
 /**
 * @brief Finish unit test and display test results.
@@ -300,7 +301,7 @@ extern "C" {
 /**
 * @brief Execute parameterized unit test - this must be executed in unit test RUNBLOCK
 */
-#define UNITTEST_EXEC(NAME, ...) do { UNITTEST_PRINT("Running test \"" UNITTEST_STR(NAME) __VA_OPT__("(") #__VA_ARGS __VA_OPT__(")") "\"\r\n") ++unittest_all; unittest_passed += test_##NAME(__VA_ARGS__); } while(0)
+#define UNITTEST_EXEC_P(NAME, ...) do { UNITTEST_PRINT("Running test \"" UNITTEST_STR(NAME) __VA_OPT__("(") #__VA_ARGS __VA_OPT__(")") "\"\r\n") ++unittest_all; unittest_passed += test_##NAME(__VA_ARGS__); } while(0)
 
 /**
 * @brief Finish unit test execution block and display test results.
